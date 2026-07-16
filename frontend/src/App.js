@@ -22,6 +22,7 @@ import InstagramFeed from '@/components/site/InstagramFeed';
 import LoadingScreen from '@/components/site/LoadingScreen';
 import AdminPage from '@/pages/Admin';
 import { AuthProvider } from '@/context/AuthContext';
+import { I18nProvider } from '@/context/I18nContext';
 
 function useTheme() {
     const [theme, setTheme] = useState(() => {
@@ -95,13 +96,15 @@ function Shell({ children }) {
 function App() {
     return (
         <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Shell>{({ theme, setTheme }) => <Site theme={theme} setTheme={setTheme} />}</Shell>} />
-                    <Route path="/admin" element={<Shell><AdminPage /></Shell>} />
-                    <Route path="*" element={<Shell>{({ theme, setTheme }) => <Site theme={theme} setTheme={setTheme} />}</Shell>} />
-                </Routes>
-            </BrowserRouter>
+            <I18nProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Shell>{({ theme, setTheme }) => <Site theme={theme} setTheme={setTheme} />}</Shell>} />
+                        <Route path="/admin" element={<Shell><AdminPage /></Shell>} />
+                        <Route path="*" element={<Shell>{({ theme, setTheme }) => <Site theme={theme} setTheme={setTheme} />}</Shell>} />
+                    </Routes>
+                </BrowserRouter>
+            </I18nProvider>
         </AuthProvider>
     );
 }

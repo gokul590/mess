@@ -1,14 +1,42 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Instagram, ArrowUpRight } from 'lucide-react';
 import { FadeInUp } from './RevealText';
 import { GALLERY } from '@/data/menu';
 
 const HANDLE = '@palaniyappa.mess';
 const IG_URL = 'https://instagram.com';
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-// Curated 8 tiles that visually feel like an IG grid
-const TILES = GALLERY.slice(0, 8);
+// Curated fallback tiles if IG API not configured
+const FALLBACK = GALLERY.slice(0, 8).map((g, i) => ({
+    id: `fallback-${i}`,
+    src: g.src,
+    permalink: IG_URL,
+    caption: g.alt,
+}));
 
 export default function InstagramFeed() {
+    const [items, setItems] = useState(FALLBACK);
+    const [source, setSource] = useState('fallback');
+
+    useEffect(() => {
+        let alive = true;
+        (async () => {
+            try {
+                const { data } = await axios.get(`${API}/instagram`);
+                if (!alive) return;
+                if (data.source === 'instagram' && data.items?.length > 0) {
+                    setItems(data.items.slice(0, 8));
+                    setSource('instagram');
+                }
+            } catch (e) {
+                // silent — keep fallback
+            }
+        })();
+        return () => { alive = false; };
+    }, []);
+
     return (
         <section
             id="instagram"
@@ -27,6 +55,12 @@ export default function InstagramFeed() {
                                 Behind-the-flame moments, festival plates, and the occasional biryani close-up.
                                 Tag us <span className="text-accent">{HANDLE}</span> when you visit.
                             </p>
+                            {source === 'instagram' && (
+                                <span className="mt-4 inline-flex items-center gap-2 overline text-accent" data-testid="ig-live-badge">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                                    Live from Instagram
+                                </span>
+                            )}
                         </div>
                         <a
                             href={IG_URL}
@@ -43,10 +77,10 @@ export default function InstagramFeed() {
                 </FadeInUp>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3" data-testid="instagram-grid">
-                    {TILES.map((t, i) => (
-                        <FadeInUp key={i} delay={(i % 4) * 0.05}>
+                    {items.map((t, i) => (
+                        <FadeInUp key={t.id} delay={(i % 4) * 0.05}>
                             <a
-                                href={IG_URL}
+                                href={t.permalink || IG_URL}
                                 target="_blank"
                                 rel="noreferrer"
                                 data-testid={`ig-tile-${i}`}
@@ -54,7 +88,7 @@ export default function InstagramFeed() {
                             >
                                 <img
                                     src={t.src}
-                                    alt={t.alt}
+                                    alt={t.caption || 'Instagram post'}
                                     loading="lazy"
                                     className="w-full h-full object-cover"
                                 />

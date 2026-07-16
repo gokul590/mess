@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { FadeInUp } from './RevealText';
+import { useI18n } from '@/context/I18nContext';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -14,6 +15,7 @@ const emptyR = { name: '', phone: '', email: '', guests: 2, date: '', time: '19:
 const emptyC = { name: '', email: '', phone: '', subject: '', message: '' };
 
 export default function Contact() {
+    const { t } = useI18n();
     const [tab, setTab] = useState('reserve');
     const [r, setR] = useState(emptyR);
     const [c, setC] = useState(emptyC);
@@ -24,12 +26,14 @@ export default function Contact() {
         setLoading(true);
         try {
             await axios.post(`${API}/reservations`, { ...r, guests: Number(r.guests) });
-            toast.success('Table reserved!', {
-                description: 'We will confirm your booking on WhatsApp shortly.',
-            });
+            toast.success(t('form.reserveSuccess'), { description: t('form.reserveSuccessDesc') });
             setR(emptyR);
         } catch (err) {
-            toast.error('Could not reserve. Please try again or call us.');
+            if (err.response?.status === 429) {
+                toast.error(t('form.rateLimitError'));
+            } else {
+                toast.error('Could not reserve. Please try again or call us.');
+            }
         } finally {
             setLoading(false);
         }
@@ -40,10 +44,14 @@ export default function Contact() {
         setLoading(true);
         try {
             await axios.post(`${API}/contact`, c);
-            toast.success('Message sent!', { description: 'We will reply within a few hours.' });
+            toast.success(t('form.contactSuccess'), { description: t('form.contactSuccessDesc') });
             setC(emptyC);
         } catch (err) {
-            toast.error('Could not send. Please try WhatsApp or call.');
+            if (err.response?.status === 429) {
+                toast.error(t('form.rateLimitError'));
+            } else {
+                toast.error('Could not send. Please try WhatsApp or call.');
+            }
         } finally {
             setLoading(false);
         }

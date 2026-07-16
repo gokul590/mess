@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Sun, Moon, Menu, X } from 'lucide-react';
+import { Sun, Moon, Menu, X, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-const NAV = [
-    { label: 'Menu', to: '#menu' },
-    { label: 'Manifesto', to: '#manifesto' },
-    { label: 'Specials', to: '#specials' },
-    { label: 'Gallery', to: '#gallery' },
-    { label: 'Instagram', to: '#instagram' },
-    { label: 'Contact', to: '#contact' },
-];
+import { useI18n } from '@/context/I18nContext';
 
 export default function Header({ theme, setTheme }) {
+    const { lang, t, toggle } = useI18n();
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
+
+    const NAV = [
+        { label: t('nav.menu'), to: '#menu', id: 'menu' },
+        { label: t('nav.manifesto'), to: '#manifesto', id: 'manifesto' },
+        { label: t('nav.specials'), to: '#specials', id: 'specials' },
+        { label: t('nav.gallery'), to: '#gallery', id: 'gallery' },
+        { label: t('nav.instagram'), to: '#instagram', id: 'instagram' },
+        { label: t('nav.contact'), to: '#contact', id: 'contact' },
+    ];
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 40);
@@ -54,20 +56,30 @@ export default function Header({ theme, setTheme }) {
                     </span>
                 </button>
 
-                <nav className="hidden lg:flex items-center gap-10">
+                <nav className="hidden lg:flex items-center gap-8">
                     {NAV.map((n) => (
                         <button
-                            key={n.to}
+                            key={n.id}
                             onClick={() => scrollTo(n.to)}
                             className="nav-link overline text-foreground/80 hover:text-foreground"
-                            data-testid={`nav-${n.label.toLowerCase()}`}
+                            data-testid={`nav-${n.id}`}
                         >
                             {n.label}
                         </button>
                     ))}
                 </nav>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                    <button
+                        aria-label="Toggle language"
+                        data-testid="lang-toggle"
+                        onClick={toggle}
+                        className="hidden md:inline-flex items-center gap-1.5 h-10 px-3 rounded-full border border-border hover:border-accent transition-colors"
+                    >
+                        <Globe size={14} />
+                        <span className="overline">{lang.toUpperCase()}</span>
+                    </button>
+
                     <button
                         aria-label="Toggle theme"
                         data-testid="theme-toggle"
@@ -79,10 +91,10 @@ export default function Header({ theme, setTheme }) {
 
                     <Button
                         onClick={() => scrollTo('#reservation')}
-                        className="hidden md:inline-flex rounded-full px-6 h-10 bg-primary hover:bg-primary/90 text-primary-foreground"
+                        className="hidden md:inline-flex rounded-full px-5 h-10 bg-primary hover:bg-primary/90 text-primary-foreground"
                         data-testid="header-book-btn"
                     >
-                        Book a Table
+                        {t('nav.book')}
                     </Button>
 
                     <button
@@ -101,21 +113,30 @@ export default function Header({ theme, setTheme }) {
                     <div className="px-6 py-6 flex flex-col gap-4">
                         {NAV.map((n) => (
                             <button
-                                key={n.to}
+                                key={n.id}
                                 onClick={() => scrollTo(n.to)}
                                 className="text-left font-display text-3xl"
-                                data-testid={`mobile-nav-${n.label.toLowerCase()}`}
+                                data-testid={`mobile-nav-${n.id}`}
                             >
                                 {n.label}
                             </button>
                         ))}
-                        <Button
-                            onClick={() => scrollTo('#reservation')}
-                            className="mt-2 rounded-full h-11 bg-primary text-primary-foreground"
-                            data-testid="mobile-book-btn"
-                        >
-                            Book a Table
-                        </Button>
+                        <div className="flex items-center gap-3 mt-2">
+                            <button
+                                onClick={toggle}
+                                data-testid="mobile-lang-toggle"
+                                className="inline-flex items-center gap-1.5 h-10 px-3 rounded-full border border-border"
+                            >
+                                <Globe size={14} /> <span className="overline">{lang.toUpperCase()}</span>
+                            </button>
+                            <Button
+                                onClick={() => scrollTo('#reservation')}
+                                className="flex-1 rounded-full h-11 bg-primary text-primary-foreground"
+                                data-testid="mobile-book-btn"
+                            >
+                                {t('nav.book')}
+                            </Button>
+                        </div>
                     </div>
                 </div>
             )}

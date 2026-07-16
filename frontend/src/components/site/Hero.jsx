@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowUpRight, Utensils } from 'lucide-react';
 import { RevealLines } from './RevealText';
+import { useI18n } from '@/context/I18nContext';
 
 const WA_NUM = '919942933912';
 const waMsg = encodeURIComponent(
@@ -9,6 +10,7 @@ const waMsg = encodeURIComponent(
 );
 
 export default function Hero() {
+    const { t, lang } = useI18n();
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
     const yImg = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
@@ -55,11 +57,11 @@ export default function Hero() {
                 >
                     <div className="flex items-center gap-2 overline text-foreground/80">
                         <span className="w-2 h-2 rounded-full bg-accent" />
-                        Est · 1980 · Pudukkottai · Tamil Nadu
+                        {t('hero.badgeLeft')}
                     </div>
                     <div className="hidden md:flex items-center gap-2 overline text-foreground/80">
                         <Utensils size={12} />
-                        Chettinad · Non-Veg · Since Generations
+                        {t('hero.badgeRight')}
                     </div>
                 </motion.div>
             </div>
@@ -71,7 +73,8 @@ export default function Hero() {
             >
                 <h1 className="font-display text-[16vw] md:text-[13vw] lg:text-[11vw] leading-[0.9] tracking-[-0.03em] font-medium text-foreground">
                     <RevealLines
-                        lines={['Palaniyappa', 'Mess.']}
+                        key={lang}
+                        lines={[t('hero.line1'), t('hero.line2')]}
                         italicIdx={1}
                         delay={0.15}
                     />
@@ -85,9 +88,9 @@ export default function Hero() {
                             transition={{ delay: 1.4, duration: 0.9 }}
                             className="font-display italic text-2xl md:text-3xl lg:text-4xl leading-tight text-foreground/90 max-w-2xl"
                         >
-                            Authentic Chettinad &amp; Tamil Nadu <br />
-                            <span className="text-accent">non-veg cuisine</span>, cooked slowly, <br />
-                            served warm.
+                            {t('hero.tagline1')} {t('hero.tagline2Prefix')}<br />
+                            <span className="text-accent">{t('hero.tagline2Highlight')}</span>{t('hero.tagline2Suffix')} <br />
+                            {t('hero.tagline3')}
                         </motion.p>
                     </div>
 
@@ -103,7 +106,7 @@ export default function Hero() {
                                 className="group inline-flex items-center gap-2 rounded-full bg-foreground text-background px-6 h-12 text-sm tracking-wide font-medium transition-transform hover:scale-[1.02]"
                                 data-testid="hero-view-menu"
                             >
-                                View Menu
+                                {t('hero.ctaMenu')}
                                 <ArrowUpRight size={16} className="transition-transform group-hover:rotate-45" />
                             </button>
                             <a
@@ -113,7 +116,7 @@ export default function Hero() {
                                 className="inline-flex items-center gap-2 rounded-full border border-foreground/60 hover:border-accent px-6 h-12 text-sm tracking-wide font-medium transition-colors"
                                 data-testid="hero-order-now"
                             >
-                                Order on WhatsApp
+                                {t('hero.ctaOrder')}
                             </a>
                         </div>
                         <button
@@ -121,7 +124,7 @@ export default function Hero() {
                             className="overline text-foreground/70 hover:text-accent"
                             data-testid="hero-contact-link"
                         >
-                            Or · Contact Us →
+                            {t('hero.ctaContact')}
                         </button>
                     </motion.div>
                 </div>
@@ -135,7 +138,7 @@ export default function Hero() {
                 className="absolute bottom-6 left-0 right-0 px-6 md:px-12 max-w-7xl mx-auto flex justify-between items-end text-xs md:text-sm"
             >
                 <div className="max-w-xs overline text-foreground/70 hidden md:block">
-                    Scroll <span className="text-accent">↓</span> to enter the kitchen
+                    {t('hero.scrollHint')}
                 </div>
                 <div className="font-display italic text-foreground/80">
                     01 <span className="text-accent">/</span> 06

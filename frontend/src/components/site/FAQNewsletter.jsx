@@ -24,7 +24,11 @@ export default function FAQNewsletter() {
             });
             setEmail('');
         } catch (err) {
-            toast.error('Could not subscribe. Try a different email.');
+            if (err.response?.status === 429) {
+                toast.error('Too many submissions. Please try again later.');
+            } else {
+                toast.error('Could not subscribe. Try a different email.');
+            }
         } finally {
             setLoading(false);
         }
