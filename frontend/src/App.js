@@ -14,6 +14,7 @@ import Specials from '@/components/site/Specials';
 import ChefServices from '@/components/site/ChefServices';
 import Gallery from '@/components/site/Gallery';
 import Reviews from '@/components/site/Reviews';
+import VideoStory from '@/components/site/VideoStory';
 import Contact from '@/components/site/Contact';
 import FAQNewsletter from '@/components/site/FAQNewsletter';
 import Footer from '@/components/site/Footer';
@@ -65,6 +66,7 @@ function Site({ theme, setTheme }) {
                 <ChefServices />
                 <Gallery />
                 <Reviews />
+                <VideoStory />
                 <Contact />
                 <InstagramFeed />
                 <FAQNewsletter />

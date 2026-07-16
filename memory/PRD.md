@@ -64,3 +64,18 @@ Premium, Awwwards-quality restaurant marketing website for "Palaniyappa Mess, Pu
 
 ## Testing
 - iteration_3.json — 10/10 backend pytest pass, frontend UI + i18n verified.
+
+## Iteration 4 (2026-01)
+- **Twilio SMS + WhatsApp** — Background task on new reservation sending both SMS and WhatsApp to owner (+91 99429 33912). Env-driven; graceful skip when unset. Playbook noted the OTP pattern; we use direct messages.create API for send-only.
+- **Reservation status workflow** — status field with 4 states (pending / confirmed / seated / cancelled). PATCH /api/reservations/{id}/status admin endpoint. Frontend StatusControl with pill buttons on each reservation card, updates in-place with toast.
+- **Menu CMS** — /api/dishes now backed by MongoDB (seeded from static data on startup). GET/PATCH /api/admin/dishes. Editor UI with per-field inputs, save-when-dirty button, active toggle. Public Signature section fetches from API with static fallback.
+- **Specials CMS** — Same pattern for /api/specials.
+- **Testing** — iteration_4.json: 16/16 backend pytest pass, all frontend flows verified.
+
+## Iteration 4b (2026-01)
+- **VideoStory section** — Embedded YouTube video (id: MgAp2MIWDKA) between Reviews and Contact. Editorial layout with golden play button overlay on high-res thumbnail; click opens autoplay modal with iframe. Animated with framer-motion.
+
+## Env vars to activate all integrations
+- `EMERGENT_EMAIL_KEY` → admin email on reservation
+- `TWILIO_ACCOUNT_SID` + `TWILIO_AUTH_TOKEN` + `TWILIO_FROM_SMS` (E.164) + `TWILIO_FROM_WHATSAPP` (whatsapp:+X) + `OWNER_PHONE` → SMS/WhatsApp on reservation
+- `IG_ACCESS_TOKEN` + `IG_USER_ID` → live Instagram feed
