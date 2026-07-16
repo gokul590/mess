@@ -16,8 +16,8 @@ export default function Founder() {
                     {/* Portrait */}
                     <FadeInUp className="lg:col-span-5">
                         <div className="relative">
-                            {/* Editorial year mark */}
-                            <div className="absolute -top-6 -left-2 md:-left-6 font-display italic text-7xl md:text-9xl text-accent/25 leading-none pointer-events-none select-none">
+                            {/* Editorial year mark — positioned so it doesn't cover the face */}
+                            <div className="absolute -top-8 -right-2 md:-right-6 font-display italic text-7xl md:text-8xl text-accent/20 leading-none pointer-events-none select-none z-0">
                                 1980
                             </div>
 
@@ -26,7 +26,7 @@ export default function Founder() {
                                 whileInView={{ scale: 1, opacity: 1 }}
                                 viewport={{ once: true, margin: '-80px' }}
                                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                                className="relative aspect-[4/5] max-w-md mx-auto lg:mx-0 dish-frame overflow-hidden rounded-sm bg-muted"
+                                className="relative z-10 aspect-[4/5] max-w-md mx-auto lg:mx-0 overflow-hidden rounded-sm bg-muted shadow-2xl"
                                 data-testid="founder-portrait"
                             >
                                 <img
@@ -35,19 +35,18 @@ export default function Founder() {
                                     loading="lazy"
                                     className="w-full h-full object-cover"
                                 />
-                                {/* Warm vignette to blend with palette */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#0C0A09]/50 via-transparent to-transparent" />
-                                <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 120px rgba(0,0,0,0.25)' }} />
-                                {/* Signature badge */}
-                                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-                                    <div className="bg-background/80 backdrop-blur px-3 py-2 rounded-sm">
-                                        <div className="overline text-accent">Founder</div>
-                                        <div className="font-display italic text-sm md:text-base leading-tight">
-                                            Thiru. Shanmuga Palaniyappan
-                                        </div>
+                            </motion.div>
+
+                            {/* Caption below photo */}
+                            <div className="relative z-10 mt-6 max-w-md mx-auto lg:mx-0 flex items-baseline gap-4">
+                                <span className="h-px w-10 bg-accent shrink-0 translate-y-2" />
+                                <div>
+                                    <div className="overline text-accent">Founder · Est. 1980</div>
+                                    <div className="font-display italic text-2xl md:text-3xl leading-tight mt-1">
+                                        Thiru. Shanmuga Palaniyappan
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
                         </div>
                     </FadeInUp>
 
