@@ -1,0 +1,31 @@
+{
+  "summary": "First-finish latency-sensitive E2E test for Palaniyappa Mess site. Backend health, all 3 form POST/GET endpoints, and full frontend flows (hero, theme toggle+persist, WhatsApp FAB, menu filter+order links, reservation, contact, newsletter idempotency, gallery lightbox, map embed, mobile menu) all working. No blockers found.",
+  "tested_scope": ["frontend", "backend", "integration"],
+  "passed": [
+    "GET /api/ returns {status:'ok'} (200)",
+    "POST /api/reservations returns 200 with created doc + UUID + created_at",
+    "POST /api/contact returns 200 with created doc",
+    "POST /api/newsletter returns 200; duplicate email returns same doc (idempotent verified — same id both calls)",
+    "GET /api/reservations, /api/contact, /api/newsletter all return 200",
+    "Hero renders 'Palaniyappa' with CTAs hero-view-menu, hero-order-now, hero-contact-link",
+    "Theme toggle switches html class (dark <-> light) and persists to localStorage key 'palaniyappa-theme'",
+    "WhatsApp FAB href = https://wa.me/919942933912 with prefilled text",
+    "Menu filter (filter-biryani) filters grid; order-<id> link points to wa.me/919942933912 with encoded dish/price text",
+    "Reservation form submit shows success toast",
+    "Contact form submit (after clicking tab-contact) shows 'Message sent!' toast",
+    "Newsletter submit shows 'You're on the list' toast",
+    "Gallery item click opens Radix dialog lightbox",
+    "Map embed present (data-testid=map-embed)",
+    "Mobile menu toggle present and opens nav drawer at 390px viewport"
+  ],
+  "failed": [],
+  "warnings": [
+    {"area": "gallery-lightbox", "issue": "Radix DialogContent missing DialogTitle — a11y console warning (not a functional bug)", "priority": "LOW"}
+  ],
+  "action_items": [
+    "Optional: wrap gallery lightbox DialogTitle in VisuallyHidden to silence Radix a11y warning"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}

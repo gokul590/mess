@@ -1,56 +1,90 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from '@/components/ui/sonner';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import '@/App.css';
+import useLenis from '@/hooks/useLenis';
+import Header from '@/components/site/Header';
+import Hero from '@/components/site/Hero';
+import Marquee from '@/components/site/Marquee';
+import Manifesto from '@/components/site/Manifesto';
+import Signature from '@/components/site/Signature';
+import Specials from '@/components/site/Specials';
+import ChefServices from '@/components/site/ChefServices';
+import Gallery from '@/components/site/Gallery';
+import Reviews from '@/components/site/Reviews';
+import Contact from '@/components/site/Contact';
+import FAQNewsletter from '@/components/site/FAQNewsletter';
+import Footer from '@/components/site/Footer';
+import FloatingActions from '@/components/site/FloatingActions';
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+function useTheme() {
+    const [theme, setTheme] = useState(() => {
+        if (typeof window === 'undefined') return 'dark';
+        return localStorage.getItem('palaniyappa-theme') || 'dark';
+    });
+    useEffect(() => {
+        const root = document.documentElement;
+        root.classList.toggle('dark', theme === 'dark');
+        localStorage.setItem('palaniyappa-theme', theme);
+    }, [theme]);
+    return [theme, setTheme];
+}
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
+function Site() {
+    useLenis();
+    const [theme, setTheme] = useTheme();
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+    useEffect(() => {
+        document.title = 'Palaniyappa Mess · Authentic Chettinad Cuisine · Pudukkottai';
+        const meta = document.querySelector('meta[name="description"]');
+        if (meta) {
+            meta.setAttribute(
+                'content',
+                'Palaniyappa Mess, Pudukkottai — authentic Chettinad and Tamil Nadu non-veg cuisine. Chicken biryani, mutton chukka, fish fry, parotta, seafood & meals.'
+            );
+        }
+    }, []);
+
+    return (
+        <div className="App relative bg-background text-foreground">
+            <Header theme={theme} setTheme={setTheme} />
+            <main>
+                <Hero />
+                <Marquee />
+                <Manifesto />
+                <Signature />
+                <Specials />
+                <ChefServices />
+                <Gallery />
+                <Reviews />
+                <Contact />
+                <FAQNewsletter />
+            </main>
+            <Footer />
+            <FloatingActions />
+            <Toaster
+                position="bottom-center"
+                theme={theme}
+                toastOptions={{
+                    classNames: {
+                        toast: 'bg-background text-foreground border border-border font-body',
+                    },
+                }}
+            />
+        </div>
+    );
+}
 
 function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Site />} />
+                <Route path="*" element={<Site />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;

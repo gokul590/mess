@@ -2,74 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    margin: 0;
-    font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-    font-family:
-        source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-}
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
-        --primary: 0 0% 9%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 3.9%;
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
-        --radius: 0.5rem;
+        /* Cinematic Chettinad — Light */
+        --background: 42 27% 95%;         /* #F7F5F0 */
+        --foreground: 10 26% 8%;          /* #1A0F0D */
+        --card: 42 27% 95%;
+        --card-foreground: 10 26% 8%;
+        --popover: 42 27% 95%;
+        --popover-foreground: 10 26% 8%;
+        --primary: 0 100% 27%;            /* #8B0000 Chettinad Red */
+        --primary-foreground: 0 0% 100%;
+        --secondary: 42 20% 89%;          /* #EBE7DF */
+        --secondary-foreground: 10 26% 8%;
+        --muted: 42 20% 89%;
+        --muted-foreground: 10 9% 33%;    /* #5C4D4A */
+        --accent: 46 63% 52%;             /* #D4AF37 Golden */
+        --accent-foreground: 10 26% 8%;
+        --destructive: 0 84% 40%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 40 22% 85%;             /* #E2DCD0 */
+        --input: 40 22% 85%;
+        --ring: 0 100% 27%;
+        --radius: 0.75rem;
     }
     .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
+        /* Cinematic Chettinad — Dark */
+        --background: 15 12% 5%;          /* #0C0A09 */
+        --foreground: 42 27% 95%;         /* #F7F5F0 */
+        --card: 15 12% 5%;
+        --card-foreground: 42 27% 95%;
+        --popover: 15 12% 5%;
+        --popover-foreground: 42 27% 95%;
+        --primary: 0 71% 38%;             /* #A51C1C */
+        --primary-foreground: 0 0% 100%;
+        --secondary: 12 12% 10%;          /* #1C1716 */
+        --secondary-foreground: 42 27% 95%;
+        --muted: 12 12% 10%;
+        --muted-foreground: 12 5% 62%;    /* #A39794 */
+        --accent: 46 63% 52%;
+        --accent-foreground: 15 12% 5%;
+        --destructive: 0 62% 40%;
+        --destructive-foreground: 42 27% 95%;
+        --border: 12 10% 15%;             /* #292220 */
+        --input: 12 10% 15%;
+        --ring: 46 63% 52%;
     }
 }
 
@@ -77,39 +56,74 @@ code {
     * {
         @apply border-border;
     }
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        scroll-behavior: auto; /* lenis handles smoothness */
+    }
     body {
         @apply bg-background text-foreground;
+        font-family: 'Outfit', system-ui, sans-serif;
+        font-weight: 300;
+        letter-spacing: 0.005em;
+    }
+    ::selection {
+        background: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
     }
 }
 
-@layer base {
-    [data-debug-wrapper="true"] {
-        display: contents !important;
+@layer utilities {
+    .font-display {
+        font-family: 'Cormorant Garamond', 'Times New Roman', serif;
     }
+    .font-body {
+        font-family: 'Outfit', system-ui, sans-serif;
+    }
+    .overline {
+        font-size: 0.72rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+    .grain {
+        position: relative;
+    }
+    .grain::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.06;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .clip-arch {
+        clip-path: path('M 0 100 C 0 45, 45 0, 100 0 L 300 0 C 355 0, 400 45, 400 100 L 400 550 L 0 550 Z');
+    }
+}
 
-    [data-debug-wrapper="true"] > * {
-        margin-left: inherit;
-        margin-right: inherit;
-        margin-top: inherit;
-        margin-bottom: inherit;
-        padding-left: inherit;
-        padding-right: inherit;
-        padding-top: inherit;
-        padding-bottom: inherit;
-        column-gap: inherit;
-        row-gap: inherit;
-        gap: inherit;
-        border-left-width: inherit;
-        border-right-width: inherit;
-        border-top-width: inherit;
-        border-bottom-width: inherit;
-        border-left-style: inherit;
-        border-right-style: inherit;
-        border-top-style: inherit;
-        border-bottom-style: inherit;
-        border-left-color: inherit;
-        border-right-color: inherit;
-        border-top-color: inherit;
-        border-bottom-color: inherit;
-    }
+/* Lenis smooth scrolling */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Marquee */
+@keyframes marquee-x {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+.animate-marquee {
+    animation: marquee-x 40s linear infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--muted)); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)); }
+
+@layer base {
+    [data-debug-wrapper="true"] { display: contents !important; }
 }
