@@ -7,6 +7,7 @@ const NAV = [
     { label: 'Manifesto', to: '#manifesto' },
     { label: 'Specials', to: '#specials' },
     { label: 'Gallery', to: '#gallery' },
+    { label: 'Instagram', to: '#instagram' },
     { label: 'Contact', to: '#contact' },
 ];
 

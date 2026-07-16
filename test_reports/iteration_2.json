@@ -1,0 +1,43 @@
+{
+  "summary": "Iteration 2 full-stack testing complete. Tested JWT auth, admin dashboard, protected endpoints, brute-force, and new UI sections (LoadingScreen, InstagramFeed, DishCarousel, Est. 1980 branding). Backend 17/18 pytest passes; brute-force lockout test failed due to K8s ingress load-balancing client.host across multiple internal proxy IPs. All frontend flows including login, dashboard tabs, refresh, logout, and reload-persistence passed.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "/api/auth/login",
+        "issue": "Brute-force lockout uses request.client.host which behind Kubernetes ingress observes internal proxy pod IPs (e.g. 10.219.0.197 and 10.219.0.204 alternating). Same real user across ~6 attempts gets identifier split across multiple pods → count never reaches 5 on any single identifier → 429 never triggers reliably in the deployed environment. In isolation the logic is correct (count>=5 → 429), but effectively it takes ~5*N attempts where N=number of proxy hops. Recommend using X-Forwarded-For (first IP) instead of request.client.host to identify real client."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Fix brute-force IP detection: read X-Forwarded-For header (first entry) in POST /api/auth/login instead of request.client.host, so ingress-forwarded requests are counted against the real client IP. Otherwise the 5-attempts-per-15-min lockout is effectively bypassed by K8s ingress load balancing."
+  ],
+  "critical_code_review_comments": [
+    "server.py: brute-force uses request.client.host which is a proxy IP under K8s ingress — need X-Forwarded-For",
+    "server.py: locked_until is refreshed on EVERY failed attempt (even attempt 1). Minor: means lockout window slides forward — attacker who waits 14 min between attempts stays locked. Acceptable behavior but non-standard.",
+    "server.py: no rate limit on public POST endpoints (/api/reservations, /api/contact, /api/newsletter) — spam risk",
+    "server.py: CORS allow_origins defaults to '*' with allow_credentials=True — invalid CORS combo (browsers will reject). Since JWT is in Authorization header not cookies, this works, but the config is fragile."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py"
+  ],
+  "success_rate": {
+    "backend": "94% (17/18)",
+    "frontend": "100%"
+  },
+  "test_credentials": "admin@palaniyappamess.com / Palaniyappa@1980 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Created TEST_-prefixed rows in reservations/contact/newsletter collections via public POST endpoints for admin dashboard verification. Also cleared db.login_attempts before backend test run.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 2 passed all UI + all backend tests except brute-force lockout, which failed due to K8s ingress presenting multiple proxy source IPs (10.219.0.197 / 10.219.0.204) — this is a real deployment concern, not a test-script bug. To reproduce: run pytest backend/tests/backend_test.py::TestBruteForce and inspect db.login_attempts — multiple identifiers get created for the same client. Fix by using request.headers.get('x-forwarded-for', '').split(',')[0].strip() or request.client.host for the identifier.",
+  "rca of the issue": "Root cause: FastAPI's request.client.host returns the immediate TCP peer IP. Under Kubernetes ingress + service load-balancing, the backend pod sees the internal proxy pod IP, and that varies across requests (round-robin/random). Identifier = f'{ip}:{email}' → different identifiers per request → each identifier's count increments independently, never crossing 5 within a single test run of 6 attempts. Mitigation: use X-Forwarded-For header's leftmost value as the client IP for lockout identifier."
+}

@@ -1,6 +1,7 @@
 export default function Marquee() {
     const items = [
         'Palaniyappa Mess',
+        'Est · 1980',
         'Authentic Chettinad',
         'Since Generations',
         'Seeraga Samba Biryani',

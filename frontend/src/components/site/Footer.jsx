@@ -25,7 +25,7 @@ export default function Footer() {
                         </button>
                         <p className="mt-8 max-w-md text-white/60 font-light">
                             Authentic Chettinad and Tamil Nadu non-veg cuisine, cooked slowly, served warm.
-                            Pudukkottai — since generations.
+                            Pudukkottai — <span className="text-[#D4AF37]">since 1980</span>.
                         </p>
                     </div>
 
@@ -69,7 +69,7 @@ export default function Footer() {
                 </div>
 
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 text-xs text-white/50">
-                    <div>© 2026 Palaniyappa Mess · All Rights Reserved</div>
+                    <div>© 2026 Palaniyappa Mess · Est. 1980 · All Rights Reserved</div>
                     <div className="overline">Crafted with fire &amp; pepper · Pudukkottai</div>
                 </div>
             </div>

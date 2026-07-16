@@ -55,7 +55,7 @@ export default function Hero() {
                 >
                     <div className="flex items-center gap-2 overline text-foreground/80">
                         <span className="w-2 h-2 rounded-full bg-accent" />
-                        Est · Pudukkottai · Tamil Nadu
+                        Est · 1980 · Pudukkottai · Tamil Nadu
                     </div>
                     <div className="hidden md:flex items-center gap-2 overline text-foreground/80">
                         <Utensils size={12} />
