@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Sparkles, Flame, Users, Truck, Utensils, Clock, Heart, Leaf } from 'lucide-react';
 import { FadeInUp } from './RevealText';
-import { SPECIALS } from '@/data/menu';
+import { SPECIALS as STATIC_SPECIALS } from '@/data/menu';
 
 const WA_NUM = '919942933912';
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const WHY = [
     { icon: Leaf, title: 'Fresh Ingredients', body: 'Local sourcing, daily deliveries.' },
@@ -21,6 +24,19 @@ function waLink(title, price) {
 }
 
 export default function Specials() {
+    const [specials, setSpecials] = useState(STATIC_SPECIALS);
+
+    useEffect(() => {
+        let alive = true;
+        (async () => {
+            try {
+                const { data } = await axios.get(`${API}/specials`);
+                if (alive && Array.isArray(data) && data.length > 0) setSpecials(data);
+            } catch { /* keep static fallback */ }
+        })();
+        return () => { alive = false; };
+    }, []);
+
     return (
         <>
             {/* Why choose us */}
@@ -78,8 +94,8 @@ export default function Specials() {
                         </div>
                     </FadeInUp>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {SPECIALS.map((s, i) => (
-                            <FadeInUp key={s.title} delay={i * 0.08}>
+                        {specials.map((s, i) => (
+                            <FadeInUp key={s.id || s.title} delay={i * 0.08}>
                                 <article
                                     data-testid={`special-${i}`}
                                     className="group relative flex flex-col h-full"

@@ -13,6 +13,8 @@ import {
     RefreshCw,
     LockKeyhole,
     Inbox,
+    UtensilsCrossed,
+    Sparkles as SparklesIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,6 +22,8 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { useAuth, formatApiError } from '@/context/AuthContext';
+import { StatusBadge, StatusControl } from '@/pages/admin/StatusControl';
+import { DishesEditor, SpecialsEditor } from '@/pages/admin/MenuEditor';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -146,7 +150,7 @@ function fmtDate(iso) {
 
 function DashboardScreen() {
     const { user, logout } = useAuth();
-    const [stats, setStats] = useState({ reservations: 0, contact_messages: 0, newsletter_subs: 0 });
+    const [stats, setStats] = useState({ reservations: 0, reservations_pending: 0, contact_messages: 0, newsletter_subs: 0 });
     const [reservations, setReservations] = useState([]);
     const [messages, setMessages] = useState([]);
     const [subs, setSubs] = useState([]);
@@ -173,6 +177,12 @@ function DashboardScreen() {
     };
 
     useEffect(() => { load(); }, []);
+
+    const updateReservationInList = (updated) => {
+        setReservations((prev) => prev.map((r) => r.id === updated.id ? updated : r));
+        // refresh stats to update pending count
+        axios.get(`${API}/admin/stats`).then((s) => setStats(s.data)).catch(() => {});
+    };
 
     return (
         <div className="min-h-screen bg-background text-foreground">
@@ -226,14 +236,15 @@ function DashboardScreen() {
                 </div>
 
                 {/* Stats */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12" data-testid="admin-stats">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12" data-testid="admin-stats">
                     <StatCard label="Reservations" value={stats.reservations} icon={Calendar} />
-                    <StatCard label="Contact Messages" value={stats.contact_messages} icon={Mail} />
-                    <StatCard label="Newsletter Subs" value={stats.newsletter_subs} icon={Users} />
+                    <StatCard label="Pending" value={stats.reservations_pending || 0} icon={Clock} />
+                    <StatCard label="Messages" value={stats.contact_messages} icon={Mail} />
+                    <StatCard label="Newsletter" value={stats.newsletter_subs} icon={Users} />
                 </div>
 
                 <Tabs defaultValue="reservations" className="w-full">
-                    <TabsList className="bg-transparent border-b border-border rounded-none w-full justify-start h-auto p-0 mb-8">
+                    <TabsList className="bg-transparent border-b border-border rounded-none w-full justify-start h-auto p-0 mb-8 overflow-x-auto flex-nowrap">
                         <TabsTrigger value="reservations" data-testid="tab-reservations" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 overline">
                             Reservations
                         </TabsTrigger>
@@ -243,48 +254,50 @@ function DashboardScreen() {
                         <TabsTrigger value="newsletter" data-testid="tab-newsletter" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 overline">
                             Newsletter
                         </TabsTrigger>
+                        <TabsTrigger value="dishes" data-testid="tab-dishes" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 overline whitespace-nowrap">
+                            <UtensilsCrossed size={12} className="mr-1.5" /> Menu CMS
+                        </TabsTrigger>
+                        <TabsTrigger value="specials" data-testid="tab-specials-cms" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 overline whitespace-nowrap">
+                            <SparklesIcon size={12} className="mr-1.5" /> Specials CMS
+                        </TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="reservations" data-testid="content-reservations">
                         {reservations.length === 0 ? <Empty label="reservations" /> : (
-                            <div className="border border-border rounded-sm overflow-hidden">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-sm">
-                                        <thead className="bg-secondary/50 text-left">
-                                            <tr>
-                                                <th className="px-4 py-3 overline text-muted-foreground">Guest</th>
-                                                <th className="px-4 py-3 overline text-muted-foreground">Contact</th>
-                                                <th className="px-4 py-3 overline text-muted-foreground">When</th>
-                                                <th className="px-4 py-3 overline text-muted-foreground">Party</th>
-                                                <th className="px-4 py-3 overline text-muted-foreground">Notes</th>
-                                                <th className="px-4 py-3 overline text-muted-foreground">Submitted</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {reservations.map((r) => (
-                                                <tr key={r.id} className="border-t border-border" data-testid={`res-row-${r.id}`}>
-                                                    <td className="px-4 py-4">
-                                                        <div className="font-medium">{r.name}</div>
-                                                        {r.occasion && <div className="text-xs text-muted-foreground">{r.occasion}</div>}
-                                                    </td>
-                                                    <td className="px-4 py-4">
-                                                        <div className="flex items-center gap-1.5 text-xs"><Phone size={12} /> {r.phone}</div>
-                                                        {r.email && <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1"><Mail size={12} /> {r.email}</div>}
-                                                    </td>
-                                                    <td className="px-4 py-4">
-                                                        <div className="flex items-center gap-1.5"><Calendar size={12} className="text-accent" /> {r.date}</div>
-                                                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1"><Clock size={12} /> {r.time}</div>
-                                                    </td>
-                                                    <td className="px-4 py-4">
-                                                        <Badge variant="outline" className="border-accent text-accent">{r.guests} pax</Badge>
-                                                    </td>
-                                                    <td className="px-4 py-4 max-w-xs text-xs text-muted-foreground">{r.message || '—'}</td>
-                                                    <td className="px-4 py-4 text-xs text-muted-foreground">{fmtDate(r.created_at)}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div className="space-y-4">
+                                {reservations.map((r) => (
+                                    <div
+                                        key={r.id}
+                                        data-testid={`res-row-${r.id}`}
+                                        className="border border-border rounded-sm p-5"
+                                    >
+                                        <div className="flex flex-wrap items-start justify-between gap-4">
+                                            <div className="flex-1 min-w-[220px]">
+                                                <div className="flex items-center gap-3 flex-wrap">
+                                                    <div className="font-display text-2xl leading-tight">{r.name}</div>
+                                                    <StatusBadge status={r.status || 'pending'} />
+                                                    {r.occasion && <Badge variant="outline" className="text-xs">{r.occasion}</Badge>}
+                                                </div>
+                                                <div className="mt-3 flex flex-wrap gap-4 text-sm text-muted-foreground">
+                                                    <span className="inline-flex items-center gap-1.5"><Phone size={12} /> {r.phone}</span>
+                                                    {r.email && <span className="inline-flex items-center gap-1.5"><Mail size={12} /> {r.email}</span>}
+                                                    <span className="inline-flex items-center gap-1.5"><Calendar size={12} className="text-accent"/> {r.date}</span>
+                                                    <span className="inline-flex items-center gap-1.5"><Clock size={12}/> {r.time}</span>
+                                                    <Badge variant="outline" className="border-accent text-accent">{r.guests} pax</Badge>
+                                                </div>
+                                                {r.message && (
+                                                    <p className="mt-3 text-sm text-muted-foreground italic leading-relaxed">
+                                                        “{r.message}”
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <span className="overline text-muted-foreground shrink-0">{fmtDate(r.created_at)}</span>
+                                        </div>
+                                        <div className="mt-4 border-t border-border pt-4">
+                                            <StatusControl reservation={r} onUpdated={updateReservationInList} />
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         )}
                     </TabsContent>
@@ -333,6 +346,14 @@ function DashboardScreen() {
                                 </table>
                             </div>
                         )}
+                    </TabsContent>
+
+                    <TabsContent value="dishes" data-testid="content-dishes">
+                        <DishesEditor />
+                    </TabsContent>
+
+                    <TabsContent value="specials" data-testid="content-specials-cms">
+                        <SpecialsEditor />
                     </TabsContent>
                 </Tabs>
             </div>

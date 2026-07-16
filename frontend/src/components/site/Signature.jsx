@@ -1,10 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
 import { Search, ArrowUpRight } from 'lucide-react';
-import { DISHES, CATEGORIES } from '@/data/menu';
+import { DISHES as STATIC_DISHES, CATEGORIES } from '@/data/menu';
 import { FadeInUp } from './RevealText';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useI18n } from '@/context/I18nContext';
 
 const WA_NUM = '919942933912';
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 function orderLink(dish) {
     const msg = encodeURIComponent(
@@ -14,15 +17,28 @@ function orderLink(dish) {
 }
 
 export default function Signature() {
+    const { t } = useI18n();
     const [cat, setCat] = useState('All');
     const [q, setQ] = useState('');
+    const [dishes, setDishes] = useState(STATIC_DISHES);
+
+    useEffect(() => {
+        let alive = true;
+        (async () => {
+            try {
+                const { data } = await axios.get(`${API}/dishes`);
+                if (alive && Array.isArray(data) && data.length > 0) setDishes(data);
+            } catch { /* keep static fallback */ }
+        })();
+        return () => { alive = false; };
+    }, []);
 
     const filtered = useMemo(() => {
-        return DISHES.filter((d) =>
+        return dishes.filter((d) =>
             (cat === 'All' || d.category === cat) &&
             (q.trim() === '' || d.name.toLowerCase().includes(q.toLowerCase()) || d.category.toLowerCase().includes(q.toLowerCase()))
         );
-    }, [cat, q]);
+    }, [cat, q, dishes]);
 
     return (
         <section
@@ -45,7 +61,7 @@ export default function Signature() {
                                 data-testid="menu-search"
                                 value={q}
                                 onChange={(e) => setQ(e.target.value)}
-                                placeholder="Search biryani, chukka, meals…"
+                                placeholder={t('menu.searchPlaceholder')}
                                 className="w-full bg-transparent outline-none text-base placeholder:text-muted-foreground"
                             />
                         </div>
