@@ -51,3 +51,16 @@ Premium, Awwwards-quality restaurant marketing website for "Palaniyappa Mess, Pu
 
 ## Tech Stack Note
 - User asked for Next.js + TypeScript + GSAP; the Emergent platform only supports **React (CRA) + FastAPI + MongoDB**. Framer Motion + Lenis + Swiper.js cover all the animation needs GSAP would provide. No stack migration performed.
+
+## Iteration 3 (2026-01)
+- **Rate limiting** — MongoDB sliding-window IP+endpoint limiter: reservations 5/10min, contact 5/10min, newsletter 3/10min. X-Forwarded-For aware (K8s-safe).
+- **Reservation email** — Background task via Emergent-managed Resend integration. Sends HTML email to ADMIN_EMAIL on new reservation. Non-blocking; logs warning + skips gracefully if EMERGENT_EMAIL_KEY unset.
+- **Tamil / English toggle** — I18nProvider + translations dictionary. Toggle in header (desktop + mobile). Localstorage persistent. Hero, nav, forms, toasts translated.
+- **Instagram Graph API** — GET /api/instagram fetches recent media (1h cached). Env-driven IG_ACCESS_TOKEN + IG_USER_ID. Frontend falls back to curated tiles + hides "Live" badge when API unset.
+
+## Environment variables to activate integrations
+- `EMERGENT_EMAIL_KEY` (backend .env) — provision Emergent Email via Profile → Integrations to enable reservation admin emails.
+- `IG_ACCESS_TOKEN` + `IG_USER_ID` (backend .env) — Instagram Business Account long-lived token from developers.facebook.com to enable live IG feed.
+
+## Testing
+- iteration_3.json — 10/10 backend pytest pass, frontend UI + i18n verified.
