@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { GALLERY } from '@/data/menu';
 import { FadeInUp } from './RevealText';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 
 export default function Gallery() {
     const [open, setOpen] = useState(null);
@@ -47,6 +48,10 @@ export default function Gallery() {
 
             <Dialog open={!!open} onOpenChange={(v) => !v && setOpen(null)}>
                 <DialogContent className="max-w-5xl bg-background border-border p-0 overflow-hidden">
+                    <VisuallyHidden.Root>
+                        <DialogTitle>{open?.alt || 'Gallery image'}</DialogTitle>
+                        <DialogDescription>Enlarged view of {open?.alt || 'gallery image'}</DialogDescription>
+                    </VisuallyHidden.Root>
                     {open && (
                         <img src={open.src} alt={open.alt} className="w-full h-auto max-h-[85vh] object-contain" />
                     )}

@@ -1,0 +1,41 @@
+# Palaniyappa Mess — PRD
+
+## Original Problem Statement
+Premium, Awwwards-quality restaurant marketing website for "Palaniyappa Mess, Pudukkottai" — authentic Chettinad / Tamil Nadu non-vegetarian cuisine. Kinetic hero, numbered manifesto chapters, editorial marquee, spotlight food photography, dark mode, framer-motion + lenis, functional reservation/contact/newsletter forms, WhatsApp ordering.
+
+## User Personas
+1. **Local diners / families in Pudukkottai** — reserve a table, browse menu, see prices, book family hall.
+2. **Weekend & festival guests** — check specials, get directions, WhatsApp order.
+3. **Corporate / catering enquiries** — bulk booking through WhatsApp CTA.
+
+## Core Requirements (Static)
+- Editorial premium design — Cormorant Garamond + Outfit, warm Chettinad palette.
+- Sections: Hero, Marquee, Manifesto (3 chapters), Signature Menu (15 dishes), Why-Choose-Us (8 cards), Specials (3 offers), Chef Services (Catering/Hall/Party), Gallery (masonry, 12 images), Reviews (4), Reservation+Contact, FAQ + Newsletter, Footer.
+- Motion: framer-motion reveals + lenis smooth scroll + parallax hero + marquee.
+- Dark/light theme toggle with persistence.
+- WhatsApp integration (+91 99429 33912) — hero, dishes, specials, services, FAB.
+- Fully responsive with mobile drawer nav.
+
+## Implemented (2026-01)
+- FastAPI backend endpoints: POST/GET /api/reservations, /api/contact, /api/newsletter (idempotent) — all persisting to MongoDB.
+- Full React/Tailwind frontend with all sections above.
+- Framer-motion masked line-by-line hero reveal, scroll-triggered FadeInUp reveals, parallax bg, animated marquee.
+- Lenis smooth scroll with programmatic scrollTo for nav links.
+- Sonner toasts on all form submissions.
+- Google Maps embed (generic Pudukkottai).
+- Gallery lightbox with Radix Dialog + a11y VisuallyHidden title.
+- WhatsApp floating FAB with pulse ring + back-to-top button.
+- SEO title + meta description.
+- data-testid on every interactive element.
+
+## Backlog / Deferred (Future)
+- **P1** Instagram feed live embed (currently social icon only)
+- **P1** Admin dashboard to view reservations/contacts/newsletter
+- **P2** Multi-language toggle (Tamil / English)
+- **P2** Table availability real-time (calendar with slot picker)
+- **P2** Online payment for weekend combos (Razorpay)
+- **P2** Email confirmation on reservation (Resend)
+- **P2** 3D dish spotlight (WebGL)
+
+## Testing
+- iteration_1.json: 100% pass on backend + frontend E2E. Only LOW-priority a11y warning (now fixed).
