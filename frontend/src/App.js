@@ -8,6 +8,7 @@ import Header from '@/components/site/Header';
 import Hero from '@/components/site/Hero';
 import Marquee from '@/components/site/Marquee';
 import Manifesto from '@/components/site/Manifesto';
+import Founder from '@/components/site/Founder';
 import Signature from '@/components/site/Signature';
 import DishCarousel from '@/components/site/DishCarousel';
 import Specials from '@/components/site/Specials';
@@ -60,6 +61,7 @@ function Site({ theme, setTheme }) {
                 <Hero />
                 <Marquee />
                 <Manifesto />
+                <Founder />
                 <Signature />
                 <DishCarousel />
                 <Specials />
