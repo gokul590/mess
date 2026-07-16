@@ -179,7 +179,13 @@ async def create_newsletter(payload: NewsletterCreate):
 @api_router.post("/auth/login", response_model=LoginResponse)
 async def login(payload: LoginRequest, request: Request):
     email = payload.email.lower()
-    ip = request.client.host if request.client else "unknown"
+    # Under K8s ingress, request.client.host is the proxy pod IP (varies across requests).
+    # Use X-Forwarded-For's leftmost entry (real client IP) for reliable brute-force tracking.
+    xff = request.headers.get("x-forwarded-for", "")
+    if xff:
+        ip = xff.split(",")[0].strip()
+    else:
+        ip = request.client.host if request.client else "unknown"
     identifier = f"{ip}:{email}"
 
     # brute force check

@@ -39,3 +39,15 @@ Premium, Awwwards-quality restaurant marketing website for "Palaniyappa Mess, Pu
 
 ## Testing
 - iteration_1.json: 100% pass on backend + frontend E2E. Only LOW-priority a11y warning (now fixed).
+
+## Iteration 2 (2026-01)
+- **Est. 1980** — Added to hero badge, marquee ribbon, footer copyright, and page title.
+- **Admin dashboard** at `/admin` — JWT auth (email+password), seeded admin (`admin@palaniyappamess.com` / `Palaniyappa@1980`), 3 stat cards, tabbed tables for Reservations / Messages / Newsletter subs, refresh + logout.
+- **Instagram Feed** — 8-tile 4-column grid section with hover-in overlay, follow CTA.
+- **Loading screen** — 1.9s premium initial reveal with animated wordmark + golden progress bar.
+- **Dish carousel** — Swiper.js chef's-selection carousel with 8 featured dishes (autoplay + prev/next controls), each linking to WhatsApp order.
+- **Backend** — Protected list endpoints, bcrypt password hashing, X-Forwarded-For based brute-force lockout (5 attempts → 429 for 15min, verified working under K8s ingress).
+- **Testing** — iteration_2.json: 100% frontend, backend brute-force initially failed under K8s (proxy IP round-robin) — fixed by using X-Forwarded-For.
+
+## Tech Stack Note
+- User asked for Next.js + TypeScript + GSAP; the Emergent platform only supports **React (CRA) + FastAPI + MongoDB**. Framer Motion + Lenis + Swiper.js cover all the animation needs GSAP would provide. No stack migration performed.
