@@ -1,0 +1,199 @@
+{
+  "theme": "dark_and_light_toggle",
+  "art_direction": {
+    "concept": "Cinematic Chettinad",
+    "description": "An Awwwards Site-of-the-Day level editorial experience. Pushing the boundary of traditional restaurant websites by treating spicy Chettinad cuisine like high-end art. Uses a kinetic typography hero, massive negative space, numbered manifesto chapters, and spotlight-clipped imagery to convey warmth, heritage, and premium quality.",
+    "archetype": "LUXURY & ORGANIC HYBRID"
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Cormorant Garamond",
+      "body": "Outfit",
+      "accent": "Cormorant Garamond (Italic)"
+    },
+    "guidelines": {
+      "h1": "text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-none font-medium",
+      "h2": "text-4xl md:text-5xl tracking-tight leading-tight",
+      "h3": "text-2xl md:text-3xl tracking-tight",
+      "body": "text-base md:text-lg leading-relaxed font-light tracking-wide",
+      "overline": "text-xs md:text-sm uppercase tracking-[0.2em] font-medium"
+    },
+    "rules": [
+      "No generic sans-serif (like Inter/Roboto) for headings.",
+      "Headlines MUST use tight letter spacing.",
+      "Overlines/Labels MUST be uppercase with wide tracking.",
+      "Use 'Cormorant Garamond' strictly for display/headings to bring the 'spicy/warm/classic' feel."
+    ]
+  },
+  "colors": {
+    "light": {
+      "background": "#F7F5F0",
+      "foreground": "#1A0F0D",
+      "primary": "#8B0000",
+      "primary_foreground": "#FFFFFF",
+      "accent": "#D4AF37",
+      "accent_foreground": "#1A0F0D",
+      "muted": "#EBE7DF",
+      "muted_foreground": "#5C4D4A",
+      "border": "#E2DCD0"
+    },
+    "dark": {
+      "background": "#0C0A09",
+      "foreground": "#F7F5F0",
+      "primary": "#A51C1C",
+      "primary_foreground": "#FFFFFF",
+      "accent": "#D4AF37",
+      "accent_foreground": "#0C0A09",
+      "muted": "#1C1716",
+      "muted_foreground": "#A39794",
+      "border": "#292220"
+    },
+    "rules": [
+      "Never use pure black or pure white. Tint blacks with deep brown/red (#0C0A09) and whites with warm sand (#F7F5F0).",
+      "Primary color (Chettinad Red) is for major CTAs and highlights.",
+      "Accent color (Golden) is for stars, badges, borders, and subtle decorative elements.",
+      "Ensure text meets APCA/WCAG contrast ratios."
+    ]
+  },
+  "visual_enhancers": {
+    "shadows": "Ambient colored shadows for food items. E.g., shadow-[0_20px_50px_rgba(139,0,0,0.15)]",
+    "borders": "1px solid #E2DCD0 (light) / #292220 (dark) for structured sections.",
+    "textures": "Subtle noise/grain overlay across the site to kill digital flatness and enhance the 'earthy/spicy' feel.",
+    "radii": "Mix of sharp edges for layout containers and soft pills (rounded-full) for buttons/badges."
+  },
+  "motion": {
+    "libraries": [
+      "framer-motion",
+      "lenis"
+    ],
+    "patterns": {
+      "scroll": "Smooth momentum scrolling using Lenis.",
+      "hero_reveal": "Masked line-by-line typography reveal using Framer Motion (initial hidden with y: 100%, animate to y: 0, overflow-hidden on parent).",
+      "parallax": "Subtle y-axis translation on hero imagery and gallery items on scroll.",
+      "hover": "Magnetic button effect or slow scale-up (scale: 1.05) on food imagery.",
+      "stagger": "List items and menu grids must stagger their entrance."
+    }
+  },
+  "layouts": {
+    "container": "max-w-7xl mx-auto px-6 md:px-12",
+    "spacing": "Generous spacing. Use py-24 or py-32 for section padding.",
+    "grid": "Bento-style grids for features. Asymmetrical grids for image galleries.",
+    "header": "Sticky with backdrop-blur-xl and 1px bottom border. Must toggle solid/glass based on scroll."
+  },
+  "components": {
+    "forms": "Use Shadcn primitives but customize heavily. Inputs should have transparent backgrounds with solid bottom borders (editorial style) rather than full boxes.",
+    "buttons": "Pill-shaped (rounded-full) or sharp rectangles. Primary buttons filled with Chettinad Red. Secondary buttons outlined with Golden or border color.",
+    "cards": "Cardless approach preferred. Use image + text directly on the background, separated by ample negative space.",
+    "marquee": "Slow, organic editorial ribbon. Monospace or Serif text. Extremely wide gaps (gap-32) between items.",
+    "toast": "Use Sonner for all form submissions (Reservation, Contact, Newsletter)."
+  },
+  "sections_blueprint": [
+    {
+      "name": "Header",
+      "content": "Logo, Links, Dark Mode Toggle, 'Book Table' CTA. Sticky, glassmorphism."
+    },
+    {
+      "name": "Hero",
+      "content": "Kinetic typography 'Experience Authentic Chettinad'. Line-by-line reveal. Subtle parallax hero image (Chef cooking or Spices) with dark vignette."
+    },
+    {
+      "name": "Editorial Marquee",
+      "content": "Slow moving text: 'Palaniyappa Mess • Authentic Taste • Since 1990 • Spices of South'."
+    },
+    {
+      "name": "Manifesto (About & Why Us)",
+      "content": "Numbered chapters (01. The Heritage, 02. The Spices, 03. The Craft). High-density text with massive typography and asymmetric imagery."
+    },
+    {
+      "name": "Signature Dishes",
+      "content": "Carousel or grid of clipped frames (arches/tall rectangles). Spotlight on images. Chicken Biryani, Mutton Chukka, Fish Fry, etc."
+    },
+    {
+      "name": "Today's Specials",
+      "content": "Premium offer cards with golden badges. Focus on Weekend Offers / Festival Specials."
+    },
+    {
+      "name": "Chef's Special / Premium Services",
+      "content": "Focus on Catering & Family Hall Booking. Dark background section with golden accents."
+    },
+    {
+      "name": "Masonry Gallery",
+      "content": "Real food photography, restaurant vibes, spices. Lightbox capability on click."
+    },
+    {
+      "name": "Customer Reviews",
+      "content": "Minimalist typographic quotes. No standard 'card' designs. Elegant serif quotes."
+    },
+    {
+      "name": "Reservation & Contact",
+      "content": "Split screen. Left: Info & Map embed. Right: Minimalist functional booking/contact form. Sonner toast on success."
+    },
+    {
+      "name": "FAQ & Newsletter",
+      "content": "Shadcn accordion for FAQs. Newsletter input inline with submit button."
+    },
+    {
+      "name": "Footer",
+      "content": "Massive typography logo. Links, Instagram feed, Back to top button. Very spacious."
+    },
+    {
+      "name": "Floating WhatsApp",
+      "content": "Fixed bottom right. Redirects to WhatsApp with pre-filled 'Order Now' message."
+    }
+  ],
+  "image_urls": {
+    "hero_and_vibe": [
+      {
+        "url": "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf",
+        "description": "Chef cooking with fire in pan, perfect for hero or vibe section."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1602237514002-c2d8ae2da393",
+        "description": "Red chilies, earthy spices for background or manifesto."
+      }
+    ],
+    "dishes": [
+      {
+        "url": "https://images.unsplash.com/photo-1755090154731-6b4f221490c3",
+        "description": "Dark moody Biryani in traditional pot.",
+        "category": "Signature Dish - Biryani"
+      },
+      {
+        "url": "https://images.pexels.com/photos/28674690/pexels-photo-28674690.jpeg",
+        "description": "Spicy Indian lamb curry / Mutton Chukka.",
+        "category": "Signature Dish - Mutton Chukka"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1683533761804-5fc12be0f684",
+        "description": "Indian Parotta flatbread.",
+        "category": "Signature Dish - Parotta"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1779469716764-d9eeaf9d1ea4",
+        "description": "Spicy Fried Chicken / Chicken 65.",
+        "category": "Signature Dish - Chicken 65"
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Execute exact color variables provided. Ensure contrast is high.",
+    "Implement 'Cormorant Garamond' and 'Outfit' fonts via Google Fonts.",
+    "Use framer-motion for line-by-line text reveal in the Hero. Wrap lines in overflow-hidden divs.",
+    "Integrate lenis for smooth scrolling (initialize in App.jsx or main layout).",
+    "Use shadcn/ui for accordion, dropdowns, and forms. Use sonner for toasts.",
+    "DO NOT use generic centered alignments. Use optical alignment, asymmetric grids, and wide spacing.",
+    "All forms MUST be fully functional (state management + toast success).",
+    "Add 'data-testid' to all interactive elements."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Do not converge toward generic AI outputs. Build something distinct and creative.",
+    "Dark colors look good without gradients. DO NOT use dark colors as gradients.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur).",
+    "DO NOT apply universal transition (transition: all). Use specific properties.",
+    "DO NOT center align the app container (.App { text-align: center; }).",
+    "Never use placeholder image URLs. Use the provided Unsplash/Pexels URLs.",
+    "Prioritize existing components from src/components/ui.",
+    "Ensure the header does NOT have a fully transparent background."
+  ]
+}
